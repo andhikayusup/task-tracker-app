@@ -3,7 +3,7 @@ import Tasks from "./components/Tasks";
 import { useState } from 'react'
 
 function App() {
-  const [state,] = useState([
+  const [tasks, setTasks] = useState([
     {
       id: 1,
       text: 'Belajar React',
@@ -24,10 +24,21 @@ function App() {
     }
   ])
 
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id))
+  }
+
+  const toggleReminder = (id) => {
+    setTasks(tasks.map((task) => task.id === id ? {...task, reminder: !task.reminder} : task))
+  }
+
   return (
     <div className="App">
       <Header />
-      <Tasks tasks={state}/>
+      {
+        tasks.length === 0 ? 'No tasks to show' : <Tasks tasks={ tasks } onDelete={deleteTask} onToggle={toggleReminder}/>
+      }
+      
     </div>
   );
 }
